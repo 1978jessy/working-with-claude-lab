@@ -1,4 +1,4 @@
-# Lab 3: Ship TODO-231
+# Lab 1: Ship TODO-231
 
 **Part 3, Ship a feature. 30 minutes. Badge: Shipper.**
 
