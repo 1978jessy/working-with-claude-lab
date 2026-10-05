@@ -1,4 +1,4 @@
-# Lab 5: Put more agents on it
+# Lab 3: Put more agents on it
 
 **Part 5, Scale it. 20 minutes. Badge: Orchestrator.**
 

@@ -5,7 +5,7 @@ Generate the seed data for the Marlowe & Finch operations dashboard.
 Writes three files, all derived from one deterministic run (seed 20260921):
 
   src/main/resources/db/migration/V2__seed.sql   the Flyway seed migration
-  docs/data/deliveries-last-30-days.csv          the no-MCP fallback for Lab 4
+  docs/data/deliveries-last-30-days.csv          the no-MCP fallback for Lab 2
   docs/data/ANSWER-KEY.md                        the true numbers, for mentors
 
 Run it from the repository root:
@@ -435,7 +435,7 @@ def write_answer_key(orders, deliveries, tickets, csv_rows: int) -> dict:
                  f"{sum(1 for t in tickets if t.status == 'open')} open")
     lines.append(f"- Carriers: {len(CARRIERS)}; vendors: {len(VENDORS)}\n")
 
-    lines.append("## The Lab 4 question: which carrier was late most often last week?\n")
+    lines.append("## The Lab 2 question: which carrier was late most often last week?\n")
     lines.append(f"**{worst_week[0]}**, with **{worst_week[1]['late']}** late deliveries between "
                  f"{d7_from.isoformat()} and {TODAY.isoformat()} "
                  f"(total {worst_week[1]['days_late']} days late across them).\n")

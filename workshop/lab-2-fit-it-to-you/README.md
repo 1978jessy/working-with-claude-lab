@@ -1,8 +1,8 @@
-# Lab 4: Fit it to you
+# Lab 2: Fit it to you
 
 **Part 4, Tailor the loop. 25 minutes. Badge: Toolmaker.**
 
-The receipt, the guardian, the live system, and your know-how saved as a skill. Stay in the session from Lab 3.
+The receipt, the guardian, the live system, and your know-how saved as a skill. Stay in the session from Lab 1.
 
 ## Step 1: /usage. Write down what TODO-231 cost
 
@@ -54,7 +54,7 @@ Watch it look at the schema, write the query and answer with a number. Ask a fol
 
 ## Step 4: save your definition of done as a skill. Call it by name
 
-Turn the definition of done from Lab 3 into a skill. A template is in `docs/examples/release-check.SKILL.md`.
+Turn the definition of done from Lab 1 into a skill. A template is in `docs/examples/release-check.SKILL.md`.
 
 ```
 Create .claude/skills/release-check/SKILL.md from docs/examples/release-check.SKILL.md. Baseline: Java 25, Jest 48 (the count after TODO-231). A count below baseline is a FAIL even if everything passes.

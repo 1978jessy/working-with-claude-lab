@@ -11,9 +11,9 @@ The afternoon session, "Claude Code, zero to expert", is three hours in six part
 
 | Part | Lab | Minutes | Badge | Ticket |
 |---|---|---|---|---|
-| 3 | [Ship TODO-231](workshop/lab-3-ship-todo-231/README.md): /init, plan and push back, build to green, /code-review, open the PR | 30 | Shipper | [`docs/tickets/TODO-231.md`](docs/tickets/TODO-231.md) |
-| 4 | [Fit it to you](workshop/lab-4-fit-it-to-you/README.md): /usage, /security-review, a hook, /mcp on the database, the release-check skill | 25 | Toolmaker | |
-| 5 | [Put more agents on it](workshop/lab-5-put-more-agents-on-it/README.md): three subagents, a nightly routine, a remote session, a swap | 20 | Orchestrator | [`docs/tickets/TODO-232.md`](docs/tickets/TODO-232.md), [`TODO-233.md`](docs/tickets/TODO-233.md) |
+| 3 | [Lab 1: Ship TODO-231](workshop/lab-1-ship-todo-231/README.md): /init, plan and push back, build to green, /code-review, open the PR | 30 | Shipper | [`docs/tickets/TODO-231.md`](docs/tickets/TODO-231.md) |
+| 4 | [Lab 2: Fit it to you](workshop/lab-2-fit-it-to-you/README.md): /usage, /security-review, a hook, /mcp on the database, the release-check skill | 25 | Toolmaker | |
+| 5 | [Lab 3: Put more agents on it](workshop/lab-3-put-more-agents-on-it/README.md): three subagents, a nightly routine, a remote session, a swap | 20 | Orchestrator | [`docs/tickets/TODO-232.md`](docs/tickets/TODO-232.md), [`TODO-233.md`](docs/tickets/TODO-233.md) |
 
 Each lab README has the copy-ready prompts, a done-when list, what to show a mentor for the badge, and what to do if you are stuck. Stuck five minutes: hand up.
 
@@ -22,16 +22,16 @@ Each lab README has the copy-ready prompts, a done-when list, what to show a men
 | Path | Used in |
 |---|---|
 | `docs/tickets/` | The three tickets |
-| `.mcp.json` | Lab 4, the `postgres` MCP server that reads the local database |
-| `docs/data/deliveries-last-30-days.csv` | Lab 4, the no-MCP fallback for the same question |
-| `docs/examples/release-check.SKILL.md` | Lab 4, the skill template |
-| `docs/examples/settings.hooks.json`, `docs/examples/hooks/pom-guard.sh` | Lab 4, the pom.xml hook |
-| `docs/examples/agents/` | Lab 5, the auditor, fixer and verifier subagents |
-| `docs/examples/routine.md` | Lab 5, the nightly release check |
+| `.mcp.json` | Lab 2, the `postgres` MCP server that reads the local database |
+| `docs/data/deliveries-last-30-days.csv` | Lab 2, the no-MCP fallback for the same question |
+| `docs/examples/release-check.SKILL.md` | Lab 2, the skill template |
+| `docs/examples/settings.hooks.json`, `docs/examples/hooks/pom-guard.sh` | Lab 2, the pom.xml hook |
+| `docs/examples/agents/` | Lab 3, the auditor, fixer and verifier subagents |
+| `docs/examples/routine.md` | Lab 3, the nightly release check |
 | `.devcontainer/` | Codespaces: Java 17, Node 20, Claude Code and PostgreSQL 16, nothing to install |
 | `docs/examples/ci.workflow.yml` | A GitHub Actions workflow that runs both suites on every pull request. Copy it to `.github/workflows/ci.yml` in your copy to switch CI on |
 
-There is deliberately no `CLAUDE.md` and no `.claude/` folder. You create them in Lab 3.
+There is deliberately no `CLAUDE.md` and no `.claude/` folder. You create them in Lab 1.
 
 ## The badge game
 
@@ -39,7 +39,7 @@ One badge per lab. A badge is one thing you show a mentor on your screen; they s
 
 ## Mentors
 
-Participants press **Use this template** on this repository to get their own copy (needed for Codespaces and Claude Code on the web). Do Lab 3 once yourself in a fresh Codespace before the day. The answer key for the database question is not in this repository: run `python3 tools/make_seed.py` in your own clone and it writes `docs/data/ANSWER-KEY.md` (git-ignored).
+Participants press **Use this template** on this repository to get their own copy (needed for Codespaces and Claude Code on the web). Do Lab 1 once yourself in a fresh Codespace before the day. The answer key for the database question is not in this repository: run `python3 tools/make_seed.py` in your own clone and it writes `docs/data/ANSWER-KEY.md` (git-ignored).
 
 ---
 
@@ -97,7 +97,7 @@ npm install                 # once
 npm test                    # Frontend: 45 tests (Jest + jsdom)
 ```
 
-### The data connection (Lab 4)
+### The data connection (Lab 2)
 
 `.mcp.json` at the root registers a `postgres` MCP server that Claude Code starts on
 demand with `npx -y @modelcontextprotocol/server-postgres`. It is read-only (every
@@ -120,7 +120,7 @@ ops-dashboard/
 ├── pom.xml                        Java build (dependencies are frozen, see comment at the top)
 ├── package.json                   Jest config and scripts
 ├── docker-compose.yml             The PostgreSQL 16 service
-├── .mcp.json                      The postgres MCP server for Lab 4
+├── .mcp.json                      The postgres MCP server for Lab 2
 ├── mvnw, mvnw.cmd, .mvn/          Maven wrapper
 ├── tools/make_seed.py             Generates V2__seed.sql, the CSV and the answer key
 ├── src/main/java/com/marlowefinch/ops/
