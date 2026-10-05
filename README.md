@@ -1,4 +1,4 @@
-# Working with Claude, London: Claude Code hands-on
+# Working with Claude: Claude Code hands-on
 
 The afternoon session, "Claude Code, zero to expert", is three hours in six parts. Parts 3, 4 and 5 are hands on keyboard, and all three run in this repository. Everything you need is here: the set-up, the three exercises, the sample app, the tickets and the reference files.
 
