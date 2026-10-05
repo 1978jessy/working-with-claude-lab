@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marlowe &amp; Finch Operations</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header id="app-header" class="header">
+      <div class="header-text">
+        <h1 id="app-title">Marlowe &amp; Finch Operations</h1>
+        <p id="app-subtitle" class="subtitle">Deliveries, tickets, revenue and renewals</p>
+      </div>
+
+      <form id="range-form" class="range-form" autocomplete="off">
+        <label class="range-field">From <input id="range-from" type="date" required></label>
+        <label class="range-field">To <input id="range-to" type="date" required></label>
+        <button id="range-apply" type="submit">Apply</button>
+        <div class="presets" role="group" aria-label="Presets">
+          <button id="preset-7" class="preset" type="button">7 days</button>
+          <button id="preset-30" class="preset active" type="button">30 days</button>
+          <button id="preset-90" class="preset" type="button">90 days</button>
+        </div>
+      </form>
+    </header>
+
+    <main>
+      <p id="status-line" class="status" role="status"></p>
+
+      <section id="kpis" class="kpis" aria-label="Key figures">
+        <div id="kpi-on-time" class="kpi">
+          <span class="kpi-value">&ndash;</span>
+          <span class="kpi-label">On-time delivery</span>
+        </div>
+        <div id="kpi-open-tickets" class="kpi">
+          <span class="kpi-value">&ndash;</span>
+          <span class="kpi-label">Open tickets</span>
+        </div>
+        <div id="kpi-revenue" class="kpi">
+          <span class="kpi-value">&ndash;</span>
+          <span class="kpi-label">Revenue</span>
+        </div>
+        <div id="kpi-orders" class="kpi">
+          <span class="kpi-value">&ndash;</span>
+          <span class="kpi-label">Orders</span>
+        </div>
+      </section>
+
+      <section class="charts">
+        <figure class="chart">
+          <figcaption>On-time rate by carrier</figcaption>
+          <svg id="chart-on-time" class="chart-svg" viewBox="0 0 480 160" role="img" aria-label="On-time delivery rate per carrier"></svg>
+        </figure>
+        <figure class="chart">
+          <figcaption>Tickets by category</figcaption>
+          <svg id="chart-tickets" class="chart-svg" viewBox="0 0 480 160" role="img" aria-label="Tickets opened per category"></svg>
+        </figure>
+      </section>
+
+      <section class="panel">
+        <h2>Late deliveries</h2>
+        <table id="late-table" class="late-table">
+          <thead>
+            <tr>
+              <th scope="col">Order</th>
+              <th scope="col">Carrier</th>
+              <th scope="col">Promised</th>
+              <th scope="col">Delivered</th>
+              <th scope="col" class="num">Days late</th>
+            </tr>
+          </thead>
+          <tbody id="late-body"></tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h2>Vendor renewals</h2>
+        <ul id="vendors-list" class="vendors"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

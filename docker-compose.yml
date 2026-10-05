@@ -1,0 +1,24 @@
+# The operations database. Start it with `docker compose up -d db`, then run the app
+# with `./mvnw spring-boot:run` (the default "postgres" profile connects to it).
+# The data lives in the named volume, so `docker compose down` keeps it and
+# `docker compose down -v` wipes it (Flyway re-seeds on the next start).
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ops-dashboard-db
+    environment:
+      POSTGRES_DB: ops
+      POSTGRES_USER: ops
+      POSTGRES_PASSWORD: ops
+    ports:
+      - "5432:5432"
+    volumes:
+      - ops-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ops -d ops"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  ops-db-data:

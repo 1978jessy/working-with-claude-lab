@@ -1,0 +1,16 @@
+# Codespaces / Dev Containers: the app container plus the Postgres service from the
+# root docker-compose.yml. Nothing to install; the database is already running.
+#
+# The app container shares the db container's network, so localhost:5432 inside the
+# Codespace is the database. That keeps the default JDBC URL and the postgres MCP
+# server in .mcp.json identical to a laptop running `docker compose up -d db`.
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/java:17
+    volumes:
+      - ..:/workspaces/ops-dashboard:cached
+    command: sleep infinity
+    network_mode: service:db
+    depends_on:
+      db:
+        condition: service_healthy
