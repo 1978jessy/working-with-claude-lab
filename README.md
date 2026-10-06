@@ -1,6 +1,6 @@
 # Working with Claude: Claude Code hands-on
 
-The afternoon session, "Claude Code, zero to expert", is three hours in six parts. Parts 1, 2 and 3 are hands on keyboard, and all three run in this repository. Everything you need is here: the set-up, the three exercises, the sample app, the tickets and the reference files.
+The afternoon session, "Claude Code, zero to expert", is three hours in six parts. Parts 3, 4 and 5 are hands on keyboard, and all three run in this repository. Everything you need is here: the set-up, the three exercises, the sample app, the tickets and the reference files.
 
 ## Start here
 
@@ -11,9 +11,9 @@ The afternoon session, "Claude Code, zero to expert", is three hours in six part
 
 | Part | Lab | Minutes | Badge | Ticket |
 |---|---|---|---|---|
-| 1 | [Lab 1: Ship TODO-231](workshop/lab-1-ship-todo-231/README.md): /init, plan and push back, build to green, /code-review, open the PR | 30 | Shipper | [`docs/tickets/TODO-231.md`](docs/tickets/TODO-231.md) |
-| 2 | [Lab 2: Fit it to you](workshop/lab-2-fit-it-to-you/README.md): /usage, /security-review, a hook, /mcp on the database, the release-check skill | 25 | Toolmaker | |
-| 3 | [Lab 3: Put more agents on it](workshop/lab-3-put-more-agents-on-it/README.md): three subagents, a nightly routine, a remote session, a swap | 20 | Orchestrator | [`docs/tickets/TODO-232.md`](docs/tickets/TODO-232.md), [`TODO-233.md`](docs/tickets/TODO-233.md) |
+| 3 | [Lab 1: Ship TODO-231](workshop/lab-1-ship-todo-231/README.md): /init, plan and push back, build to green, /code-review, open the PR | 30 | Shipper | [`docs/tickets/TODO-231.md`](docs/tickets/TODO-231.md) |
+| 4 | [Lab 2: Fit it to you](workshop/lab-2-fit-it-to-you/README.md): /usage, /security-review, a hook, /mcp on the database, the release-check skill | 25 | Toolmaker | |
+| 5 | [Lab 3: Put more agents on it](workshop/lab-3-put-more-agents-on-it/README.md): three subagents, a nightly routine, a remote session, a swap | 20 | Orchestrator | [`docs/tickets/TODO-232.md`](docs/tickets/TODO-232.md), [`TODO-233.md`](docs/tickets/TODO-233.md) |
 
 Each lab README has the copy-ready prompts, a done-when list, what to show a mentor for the badge, and what to do if you are stuck. Stuck five minutes: hand up.
 
