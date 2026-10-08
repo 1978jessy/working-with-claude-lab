@@ -22,7 +22,8 @@ There is no linter or frontend build step. The app serves on port 8080.
 
 ## Rules
 
-- `pom.xml` dependencies are frozen: any change needs a CHG ticket. Don't add npm packages either unless asked.
+- pom.xml dependencies are frozen. Any change needs a CHG ticket.
+- Don't add npm packages unless asked.
 - "Today" is pinned to **2026-09-21** (`ops.today` → `ClockConfig` `Clock` bean). Always get dates from the injected `Clock`, i.e. `LocalDate.now(clock)`, never the no-arg `LocalDate.now()`. Default ranges are the 30 days ending today (`DateRange.resolve`), and test expectations depend on it.
 - Persistence is plain SQL with Spring JDBC (`NamedParameterJdbcTemplate` / `JdbcTemplate`) in `DashboardRepository`/`VendorRepository`; no JPA. Schema changes go in new Flyway migrations under `src/main/resources/db/migration/`. SQL must run on both PostgreSQL and H2 in PostgreSQL mode.
 - Responses are Java records; controllers stay thin (parse params → `DateRange` → repository).
