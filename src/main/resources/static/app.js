@@ -15,7 +15,7 @@
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var THEME_KEY = 'ops-dashboard.theme';
   var THEMES = ['light', 'dark'];
-  var DEFAULT_THEME = 'light';
+  var DEFAULT_THEME = 'dark';
 
   // ---------- API client ----------
 

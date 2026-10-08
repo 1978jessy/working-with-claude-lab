@@ -5,37 +5,13 @@
  * data-theme="light" or data-theme="dark" on <html> (TODO-231); nothing else in this
  * file or in app.js names a colour. Both blocks must declare the same variables
  * (checked by src/test/javascript/theme.test.js).
+ *
+ * Dark is the default (AC-4), so :root carries the dark values. The OS colour scheme
+ * is deliberately ignored: there is no media query on it here. The light block uses
+ * :root[data-theme="light"] so it beats :root whatever the order of the two blocks.
  */
 
 :root,
-[data-theme="light"] {
-  color-scheme: light;
-  --bg: #f3f1ec;
-  --surface: #ffffff;
-  --surface-hover: #f8f6f1;
-  --text: #1f2a37;
-  --text-muted: #6b7280;
-  --text-label: #4b5563;
-  --heading: #4a2c19;
-  --border: #e3ddd1;
-  --border-strong: #d9d3c7;
-  --border-row: #ece7dd;
-  --control-border: #c9c2b4;
-  --brand-fill: #4a2c19;
-  --brand-fill-hover: #613a22;
-  --on-brand: #ffffff;
-  --preset-active-bg: #e8dfd2;
-  --preset-active-border: #a98467;
-  --error: #9f1239;
-  --warn: #c2410c;
-  --renewal-bg: #fff4ec;
-  --renewal-text: #9a3412;
-  --chart-bar: #2f6f73;
-  --chart-bar-warn: #c2410c;
-  --chart-label: #374151;
-  --chart-value: #6b7280;
-}
-
 [data-theme="dark"] {
   color-scheme: dark;
   --bg: #14181f;
@@ -62,6 +38,34 @@
   --chart-bar-warn: #f0834a;
   --chart-label: #d1d5db;
   --chart-value: #9ca3af;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3f1ec;
+  --surface: #ffffff;
+  --surface-hover: #f8f6f1;
+  --text: #1f2a37;
+  --text-muted: #6b7280;
+  --text-label: #4b5563;
+  --heading: #4a2c19;
+  --border: #e3ddd1;
+  --border-strong: #d9d3c7;
+  --border-row: #ece7dd;
+  --control-border: #c9c2b4;
+  --brand-fill: #4a2c19;
+  --brand-fill-hover: #613a22;
+  --on-brand: #ffffff;
+  --preset-active-bg: #e8dfd2;
+  --preset-active-border: #a98467;
+  --error: #9f1239;
+  --warn: #c2410c;
+  --renewal-bg: #fff4ec;
+  --renewal-text: #9a3412;
+  --chart-bar: #2f6f73;
+  --chart-bar-warn: #c2410c;
+  --chart-label: #374151;
+  --chart-value: #6b7280;
 }
 
 * {

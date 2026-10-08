@@ -27,7 +27,7 @@ function cssRules() {
 }
 
 function isThemeBlock(selector) {
-  return /^(:root|\[data-theme="(light|dark)"\])(\s*,\s*(:root|\[data-theme="(light|dark)"\]))*$/.test(selector);
+  return /^(:root|(:root)?\[data-theme="(light|dark)"\])(\s*,\s*(:root|(:root)?\[data-theme="(light|dark)"\]))*$/.test(selector);
 }
 
 function declaredVariables(body) {
@@ -39,9 +39,24 @@ beforeEach(() => {
   document.documentElement.removeAttribute('data-theme');
 });
 
+const originalMatchMedia = window.matchMedia;
+
 afterEach(() => {
   jest.restoreAllMocks();
+  window.matchMedia = originalMatchMedia;
 });
+
+/** jsdom has no matchMedia; stand in for an OS that answers every query as given. */
+function mockOsPrefers(scheme) {
+  window.matchMedia = jest.fn((query) => ({
+    matches: query.includes('prefers-color-scheme: ' + scheme),
+    media: query,
+    addEventListener() {},
+    removeEventListener() {},
+    addListener() {},
+    removeListener() {}
+  }));
+}
 
 describe('AC-1: theme toggle in the header', () => {
   test('there is a #theme-toggle button inside the header that does not submit the form', async () => {
@@ -54,22 +69,22 @@ describe('AC-1: theme toggle in the header', () => {
     expect(document.getElementById('range-form').contains(button)).toBe(false);
   });
 
-  test('clicking switches light to dark and back', async () => {
+  test('clicking switches dark to light and back', async () => {
     const { document } = await loadApp();
-    expect(theme(document)).toBe('light');
-    toggle(document).click();
     expect(theme(document)).toBe('dark');
     toggle(document).click();
     expect(theme(document)).toBe('light');
+    toggle(document).click();
+    expect(theme(document)).toBe('dark');
   });
 
   test('the label names the theme you get when you click', async () => {
     const { document } = await loadApp();
-    expect(toggle(document).textContent).toBe('Dark theme');
-    expect(toggle(document).getAttribute('aria-label')).toBe('Switch to the dark theme');
-    toggle(document).click();
     expect(toggle(document).textContent).toBe('Light theme');
     expect(toggle(document).getAttribute('aria-label')).toBe('Switch to the light theme');
+    toggle(document).click();
+    expect(toggle(document).textContent).toBe('Dark theme');
+    expect(toggle(document).getAttribute('aria-label')).toBe('Switch to the dark theme');
   });
 
   test('clicking does not call the API', async () => {
@@ -81,26 +96,22 @@ describe('AC-1: theme toggle in the header', () => {
 
   test('the app state follows the theme', async () => {
     const { document, app } = await loadApp();
-    expect(app.state.theme).toBe('light');
-    toggle(document).click();
     expect(app.state.theme).toBe('dark');
+    toggle(document).click();
+    expect(app.state.theme).toBe('light');
   });
 });
 
 describe('AC-2: data-theme attribute and CSS variables', () => {
-  test('light is the default and is set on <html> as data-theme', async () => {
-    const { document } = await loadApp();
-    expect(theme(document)).toBe('light');
-  });
-
   test('app.js contains no colour', () => {
     expect(fs.readFileSync(APP_PATH, 'utf8')).not.toMatch(COLOUR_LITERAL);
   });
 
   test('style.css has a light and a dark theme block declaring the same variables', () => {
     const rules = cssRules();
-    const light = rules.find((r) => r.selector.split(',').map((s) => s.trim()).includes(':root'));
-    const dark = rules.find((r) => r.selector === '[data-theme="dark"]');
+    const dark = rules.find((r) => r.selector.split(',').map((s) => s.trim()).includes(':root'));
+    // :root[data-theme="light"] outranks the bare :root of the dark block, so the order of the blocks does not matter.
+    const light = rules.find((r) => r.selector === ':root[data-theme="light"]');
     expect(light).toBeDefined();
     expect(dark).toBeDefined();
     expect(declaredVariables(light.body).length).toBeGreaterThan(0);
@@ -129,16 +140,16 @@ describe('AC-3: the choice is persisted', () => {
   test('clicking stores the theme in localStorage', async () => {
     const { document } = await loadApp();
     toggle(document).click();
-    expect(window.localStorage.getItem(STORAGE_KEY)).toBe('dark');
-    toggle(document).click();
     expect(window.localStorage.getItem(STORAGE_KEY)).toBe('light');
+    toggle(document).click();
+    expect(window.localStorage.getItem(STORAGE_KEY)).toBe('dark');
   });
 
-  test('a stored dark theme is restored on load', async () => {
-    window.localStorage.setItem(STORAGE_KEY, 'dark');
+  test('a stored light theme is restored on load', async () => {
+    window.localStorage.setItem(STORAGE_KEY, 'light');
     const { document } = await loadApp();
-    expect(theme(document)).toBe('dark');
-    expect(toggle(document).textContent).toBe('Light theme');
+    expect(theme(document)).toBe('light');
+    expect(toggle(document).textContent).toBe('Dark theme');
   });
 
   test('a refresh keeps the theme picked before it', async () => {
@@ -146,29 +157,62 @@ describe('AC-3: the choice is persisted', () => {
     toggle(document).click();
     document.documentElement.removeAttribute('data-theme');
     ({ document } = await loadApp());
-    expect(theme(document)).toBe('dark');
+    expect(theme(document)).toBe('light');
   });
 
   test('an unknown stored value falls back to the default', async () => {
     window.localStorage.setItem(STORAGE_KEY, 'purple');
     const { document } = await loadApp();
-    expect(theme(document)).toBe('light');
+    expect(theme(document)).toBe('dark');
   });
 
   test('the toggle still works when localStorage throws', async () => {
     jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('blocked'); });
     jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked'); });
     const { document } = await loadApp();
-    expect(theme(document)).toBe('light');
-    toggle(document).click();
     expect(theme(document)).toBe('dark');
+    toggle(document).click();
+    expect(theme(document)).toBe('light');
   });
 });
 
 describe('theme without the API', () => {
   test('the theme is applied even when the health check fails', async () => {
-    window.localStorage.setItem(STORAGE_KEY, 'dark');
+    window.localStorage.setItem(STORAGE_KEY, 'light');
     const { document } = await loadApp({ failing: ['/api/health'] });
+    expect(theme(document)).toBe('light');
+  });
+});
+
+describe('AC-4: dark by default, the OS setting is ignored', () => {
+  test('with nothing stored the dashboard opens in the dark theme', async () => {
+    const { document, app } = await loadApp();
     expect(theme(document)).toBe('dark');
+    expect(app.state.theme).toBe('dark');
+    expect(toggle(document).textContent).toBe('Light theme');
+  });
+
+  test('an OS that prefers light still gets the dark theme', async () => {
+    mockOsPrefers('light');
+    const { document } = await loadApp();
+    expect(theme(document)).toBe('dark');
+  });
+
+  test('a stored choice still wins over the default', async () => {
+    mockOsPrefers('dark');
+    window.localStorage.setItem(STORAGE_KEY, 'light');
+    const { document } = await loadApp();
+    expect(theme(document)).toBe('light');
+  });
+
+  test('neither style.css nor app.js looks at the OS colour scheme', () => {
+    expect(fs.readFileSync(CSS_PATH, 'utf8')).not.toMatch(/prefers-color-scheme/);
+    expect(fs.readFileSync(APP_PATH, 'utf8')).not.toMatch(/matchMedia|prefers-color-scheme/);
+  });
+
+  test('index.html already says dark before app.js runs', () => {
+    const html = fs.readFileSync(path.join(path.dirname(APP_PATH), 'index.html'), 'utf8');
+    expect(html).toMatch(/<html[^>]*\sdata-theme="dark"/);
+    expect(html).toMatch(/<button id="theme-toggle"[^>]*>Light theme<\/button>/);
   });
 });
