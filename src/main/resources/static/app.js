@@ -13,6 +13,9 @@
   var DEFAULT_PRESET_DAYS = 30;
   var LATE_LIMIT = 20;
   var SVG_NS = 'http://www.w3.org/2000/svg';
+  var THEME_KEY = 'ops-dashboard.theme';
+  var THEMES = ['light', 'dark'];
+  var DEFAULT_THEME = 'light';
 
   // ---------- API client ----------
 
@@ -109,6 +112,7 @@
 
     var els = {
       status: document.getElementById('status-line'),
+      themeToggle: document.getElementById('theme-toggle'),
       form: document.getElementById('range-form'),
       from: document.getElementById('range-from'),
       to: document.getElementById('range-to'),
@@ -130,6 +134,7 @@
       from: null,
       to: null,
       preset: DEFAULT_PRESET_DAYS,
+      theme: DEFAULT_THEME,
       kpis: null,
       onTime: [],
       late: [],
@@ -332,6 +337,53 @@
       var range = applyPreset(days, state.today);
       return load(range.from, range.to);
     }
+
+    // ---------- Theme (TODO-231) ----------
+
+    /** localStorage can be missing or throw (private mode, blocked storage); the theme still works for the session. */
+    function storage() {
+      try {
+        return document.defaultView && document.defaultView.localStorage;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function readStoredTheme() {
+      try {
+        var stored = storage() && storage().getItem(THEME_KEY);
+        return THEMES.indexOf(stored) === -1 ? DEFAULT_THEME : stored;
+      } catch (err) {
+        return DEFAULT_THEME;
+      }
+    }
+
+    function storeTheme(theme) {
+      try {
+        if (storage()) {
+          storage().setItem(THEME_KEY, theme);
+        }
+      } catch (err) {
+        // Not persisted; the choice still applies until the page is reloaded.
+      }
+    }
+
+    /** Colours live in style.css as CSS variables; this only flips data-theme on <html>. */
+    function applyTheme(theme) {
+      state.theme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      var next = theme === 'dark' ? 'light' : 'dark';
+      els.themeToggle.textContent = next === 'dark' ? 'Dark theme' : 'Light theme';
+      els.themeToggle.setAttribute('aria-label', 'Switch to the ' + next + ' theme');
+    }
+
+    els.themeToggle.addEventListener('click', function () {
+      var next = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      storeTheme(next);
+    });
+
+    applyTheme(readStoredTheme());
 
     els.form.addEventListener('submit', function (event) {
       event.preventDefault();

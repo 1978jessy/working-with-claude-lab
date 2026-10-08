@@ -19,6 +19,7 @@ const REGISTERED_IDS = [
   'app-header',
   'app-title',
   'app-subtitle',
+  'theme-toggle',
   'range-form',
   'range-from',
   'range-to',
